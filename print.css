@@ -1,0 +1,1 @@
+@media print{header,footer,.noprint,.skip{display:none!important}body,main,.panel{background:white!important;color:black!important}main{padding:0}.panel{border:0}.notice{border:1px solid #999}a{color:black}.price{color:black}body{font-size:12pt}@page{size:A4;margin:18mm}}
