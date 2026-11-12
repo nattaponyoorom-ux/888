@@ -1,5 +1,5 @@
 import {CONFIG} from './config.js';
-// สัญญา HTTP ฉบับร่าง รอเทียบกับ Api.gs เวอร์ชัน 3
+// Rail-API HTTP contract 1: POST JSON with a text/plain content type.
 export async function call(action, payload = {}) {
   if (!CONFIG.apiUrl || !CONFIG.contractReady) throw new Error('ระบบกำลังเตรียมเชื่อมต่อข้อมูล กรุณาติดต่อเจ้าหน้าที่ก่อนส่งคำขอ');
   const url = new URL(CONFIG.apiUrl);

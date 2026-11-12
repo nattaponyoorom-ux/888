@@ -10,11 +10,11 @@ if(!id || !token) status(target,'กรุณาเปิดลิงก์ต�
 else {
   try {
     const data=await api.verify(id,token);
-    if(!data || typeof data.id!=='string' || typeof data.status!=='string') throw new Error('รูปแบบเอกสารไม่ตรงกับบริการข้อมูล');
-    target.replaceChildren(node('h2',`เอกสาร ${data.id}`),node('p',data.status));
+    if(data?.intact === false) throw new Error('เอกสารนี้ไม่ผ่านการตรวจสอบความถูกต้อง กรุณาติดต่อเจ้าหน้าที่');
+    if(!data || data.intact !== true || typeof data.id!=='string' || typeof data.status!=='string') throw new Error('รูปแบบเอกสารไม่ตรงกับบริการข้อมูล');
+    target.replaceChildren(node('h2',`เอกสาร ${data.id}`),node('p',data.statusLabel || data.status));
     if(data.message) target.append(node('p',data.message));
-    // รอระบุฟิลด์รายการราคา/การยืนยันใน Api.gs ก่อนสร้างใบเสนอราคาเต็ม
-    target.append(node('p','ข้อมูลตรวจสอบสถานะ · รายละเอียดใบเสนอราคาฉบับเต็มต้องยืนยันรูปแบบข้อมูลกับ Rail-API'));
+    target.append(node('p','เอกสารนี้ใช้ตรวจสอบสถานะคำขอ กรุณารอใบเสนอราคาและการจัดสรรตู้ที่เจ้าหน้าที่ยืนยัน'));
     print.hidden=false; print.addEventListener('click',()=>window.print());
   } catch(e) { status(target,e.message,true); }
 }

@@ -54,8 +54,16 @@ form.addEventListener('submit',async event=>{
     if(JSON.stringify(proposed)!==JSON.stringify(input())) throw new Error('รายละเอียดเปลี่ยนระหว่างประเมิน กรุณาประเมินใหม่');
     if(!data || typeof data.enough!=='boolean') throw new Error('รูปแบบผลประเมินไม่ตรงกับบริการข้อมูล');
     result.replaceChildren(node('h2','ผลการประเมิน'),node('p',`ตู้คงเหลือ ${data.available} ตู้`));
-    if(Number.isSafeInteger(data.grandTotalSatang)) result.append(node('p',`${(data.grandTotalSatang/100).toLocaleString('th-TH',{minimumFractionDigits:2})} บาท`,'price'));
-    else result.append(node('p','รอการยืนยันฟิลด์ยอดรวมจาก Rail-API'));
+    if(data.priced === false) {
+      result.append(node('p','ต้องให้เจ้าหน้าที่พิจารณาสิทธิ์และค่าใช้จ่าย ยังไม่มีราคายืนยัน'));
+      if(catalog.exemptionNote) result.append(node('p',catalog.exemptionNote));
+    } else if(data.priced === true && Number.isSafeInteger(data.grandTotalSatang)) {
+      const money = value => (value/100).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});
+      result.append(node('p',`รวม ${money(data.grandTotalSatang)} บาท`,'price'));
+      if(Number.isSafeInteger(data.serviceTotalSatang)) result.append(node('p',`ค่าบริการ ${money(data.serviceTotalSatang)} บาท`));
+      if(Number.isSafeInteger(data.depositSatang)) result.append(node('p',`ค่าประกัน ${money(data.depositSatang)} บาท`));
+    } else throw new Error('ผลประเมินไม่มีข้อมูลราคาที่สมบูรณ์');
+    if(catalog.mode === 'DEMO') result.append(node('p','ข้อมูลสาธิต: ราคาและจำนวนตู้ใช้ทดสอบระบบเท่านั้น','notice'));
     result.append(node('p','ผลประเมินยังไม่ใช่การยืนยันราคาและการจัดสรรตู้'));
     if(data.enough && CONFIG.privacyReady && !attempted) {approvedInput=proposed;send.hidden=false;}
     else result.append(node('p',data.enough?'การส่งคำขอยังไม่เปิดใช้งาน กรุณาติดต่อเจ้าหน้าที่':'จำนวนตู้ไม่เพียงพอ กรุณาปรับวันหรือจำนวนตู้'));

@@ -1,7 +1,7 @@
-// แก้ endpoint ที่นี่ที่เดียว หลัง Deploy Rail-API เป็น Web App
+// Rail-API: HTTP contract 1 / schema 2. Change the endpoint here only.
 export const CONFIG = Object.freeze({
-  apiUrl: '',
-  contractReady: false, // เปิดเมื่อ Api.gs รองรับสัญญา JSON ใน README แล้ว
-  privacyReady: false, // เปิดหลังเจ้าของระบบตรวจนโยบายและข้อมูลผู้ควบคุมข้อมูล
-  timeoutMs: 20000
+  apiUrl: 'https://script.google.com/macros/s/AKfycbwFyICGv9rIrhHU2zUgLuUUfoVOuSGn9xjslXvzfeJKuri1J6u0jfB_p_DRouL-BI7cAQ/exec',
+  contractReady: true,
+  privacyReady: false, // ยังไม่เปิดรับคำขอจริง
+  timeoutMs: 30000
 });
